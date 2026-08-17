@@ -19,39 +19,29 @@
     
     <!-- SCIMAX Header -->
     <header class="app-header">
-      <div class="header-left">
-        <div class="brand-logo">
-          <div class="logo-icon">
-            <i data-lucide="check-square"></i>
-          </div>
-          <div class="logo-text">
-            <h1>Task Workspace</h1>
-            <span class="badge-tag">SCIMAX Pubs System</span>
+      <div class="app-header__glow" aria-hidden="true"></div>
+      <div class="app-header__content">
+        <div class="app-header__left">
+          <h1>Task Workspace</h1>
+          <p class="app-header__subtitle">SCIMAX Pubs System</p>
+        </div>
+        <div class="app-header__right">
+          <div class="app-header__actions">
+            <div class="date-display">
+              <i data-lucide="calendar"></i>
+              <span id="currentDateStr">Saturday, Aug 15, 2026</span>
+            </div>
+            <button class="sci-btn sci-btn--primary" id="openCreateModalBtn">
+              <i data-lucide="plus-circle"></i>
+              <span>New Task</span>
+            </button>
           </div>
         </div>
-        <div class="header-divider"></div>
-        <div class="workspace-info">
-          <div class="workspace-pill">
-            <i data-lucide="folder-git-2"></i>
-            <span>Active Workspaces</span>
-            <span class="count-badge" id="totalProjectCount">3 Projects</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="header-right">
-        <div class="date-display">
-          <i data-lucide="calendar"></i>
-          <span id="currentDateStr">Saturday, Aug 15, 2026</span>
-        </div>
-        <button class="sci-btn sci-btn--primary" id="openCreateModalBtn">
-          <i data-lucide="plus-circle"></i>
-          <span>New Task</span>
-        </button>
       </div>
     </header>
 
     <!-- Stats Summary Banner -->
+    <!--
     <section class="stats-banner">
       <div class="stat-card">
         <div class="stat-icon stat-orange">
@@ -93,6 +83,7 @@
         </div>
       </div>
     </section>
+    -->
 
     <!-- Toolbar: Search, Filters & View Toggle -->
     <section class="toolbar-section">
@@ -267,23 +258,22 @@
     <div class="modal-card">
       <!-- SCIMAX Signature 3-Tone Gradient Header -->
       <div class="modal-header">
-        <div class="modal-title-group">
-          <div class="modal-icon-badge">
-            <i data-lucide="check-square" id="modalHeaderIcon"></i>
-          </div>
-          <div>
+        <div class="modal-header__glow" aria-hidden="true"></div>
+        <div class="modal-header__content">
+          <div class="modal-header__left">
+            <button type="button" class="modal-back-link" id="closeModalBtn">
+              <i data-lucide="arrow-left"></i>
+              <span>Back</span>
+            </button>
             <h3 id="modalTitle">Create New Task</h3>
-            <p id="modalSubtitle">Fill out details to schedule a new task</p>
+            <p class="modal-header__subtitle" id="modalSubtitle">Progressive task configuration</p>
           </div>
-        </div>
-        <div class="modal-header-actions">
-          <button type="submit" form="taskForm" class="sci-btn sci-btn--primary" id="saveTaskBtn">
-            <i data-lucide="check"></i>
-            <span id="saveBtnText">Save Task</span>
-          </button>
-          <button class="sci-close-btn" id="closeModalBtn" title="Close Modal">
-            <i data-lucide="x"></i>
-          </button>
+          <div class="modal-header-actions">
+            <button type="submit" form="taskForm" class="sci-btn sci-btn--primary" id="saveTaskBtn">
+              <i data-lucide="check"></i>
+              <span id="saveBtnText">Save Task</span>
+            </button>
+          </div>
         </div>
       </div>
 

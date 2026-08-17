@@ -288,7 +288,9 @@ class TaskApp {
       }
     });
 
-    this.totalProjectCount.textContent = `${projects.length} Projects`;
+    if (this.totalProjectCount) {
+      this.totalProjectCount.textContent = `${projects.length} Projects`;
+    }
   }
 
   bindEvents() {
@@ -376,9 +378,16 @@ class TaskApp {
 
     // Modal Triggers
     this.openCreateModalBtn.addEventListener("click", () => this.openModal());
-    this.closeModalBtn.addEventListener("click", () => this.closeModal());
+    if (this.closeModalBtn) {
+      this.closeModalBtn.addEventListener("click", () => this.closeModal());
+    }
     this.taskModalOverlay.addEventListener("click", (e) => {
       if (e.target === this.taskModalOverlay) this.closeModal();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !this.taskModalOverlay.classList.contains("hidden")) {
+        this.closeModal();
+      }
     });
 
     // Form Submit
@@ -450,10 +459,10 @@ class TaskApp {
     const plannedCount = activeTasks.filter(t => t.status === "Planned").length;
     const favouritesCount = activeTasks.filter(t => t.isFavourite).length;
 
-    this.statActive.textContent = activeTasks.length;
-    this.statInProgress.textContent = inProgressCount;
-    this.statPlanned.textContent = plannedCount;
-    this.statFavourites.textContent = favouritesCount;
+    if (this.statActive) this.statActive.textContent = activeTasks.length;
+    if (this.statInProgress) this.statInProgress.textContent = inProgressCount;
+    if (this.statPlanned) this.statPlanned.textContent = plannedCount;
+    if (this.statFavourites) this.statFavourites.textContent = favouritesCount;
 
     this.countAll.textContent = activeTasks.length;
     this.countInProgress.textContent = inProgressCount;
@@ -874,10 +883,8 @@ class TaskApp {
           </td>
           <td class="table-action-cell" onclick="event.stopPropagation()">
             <div class="sci-action-menu">
-              <button class="sci-action-trigger" onclick="event.stopPropagation(); app.toggleDropdown(event, '${task.id}')">
-                <i data-lucide="settings-2" class="sci-action-trigger__icon"></i>
-                <span>Actions</span>
-                <i data-lucide="chevron-down" class="sci-action-trigger__caret"></i>
+              <button class="menu-trigger-btn" onclick="event.stopPropagation(); app.toggleDropdown(event, '${task.id}')" title="Available Actions">
+                <i data-lucide="more-vertical"></i>
               </button>
               <div class="action-dropdown-menu hidden" id="dropdown-${task.id}">
                 <button class="dropdown-item item-favourite ${isFav}" onclick="event.stopPropagation(); app.toggleFavourite('${task.id}')">
@@ -995,7 +1002,7 @@ class TaskApp {
       if (!task) return;
 
       this.modalTitle.textContent = `Update Task ${task.code}`;
-      this.modalSubtitle.textContent = "Modify task details and schedule";
+      this.modalSubtitle.textContent = "Task update configuration";
       this.saveBtnText.textContent = "Update Task";
 
       this.formTaskId.value = task.id;
@@ -1015,7 +1022,7 @@ class TaskApp {
       this.formEndDate.value = task.endDate;
     } else {
       this.modalTitle.textContent = "Create New Task";
-      this.modalSubtitle.textContent = "Fill out details to schedule a new task";
+      this.modalSubtitle.textContent = "Progressive task configuration";
       this.saveBtnText.textContent = "Save Task";
 
       this.formTaskId.value = "";
