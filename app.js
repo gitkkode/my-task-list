@@ -57,6 +57,114 @@ const INITIAL_TASKS = [
     status: "Planned",
     isFavourite: false,
     createdOn: "2026-08-12T08:50:00"
+  },
+  {
+    id: "task-105",
+    code: "INF-301",
+    title: "AWS Kubernetes Cluster Migration & Auto-scaling Setup",
+    type: "Infrastructure",
+    projectName: "Cloud Infra & DevOps",
+    projectType: "Infrastructure Pipeline",
+    startDate: "2026-08-12",
+    endDate: "2026-08-26",
+    status: "In-Progress",
+    isFavourite: false,
+    createdOn: "2026-08-05T09:00:00",
+    startedOn: "2026-08-12T10:00:00"
+  },
+  {
+    id: "task-106",
+    code: "BUG-882",
+    title: "Fix Memory Leak in Real-Time Analytics WebSockets",
+    type: "Bug Fix",
+    projectName: "Customer Portal v2",
+    projectType: "Enterprise Web Portal",
+    startDate: "2026-08-15",
+    endDate: "2026-08-23",
+    status: "In-Progress",
+    isFavourite: true,
+    createdOn: "2026-08-09T11:20:00",
+    startedOn: "2026-08-15T13:30:00"
+  },
+  {
+    id: "task-107",
+    code: "MOB-109",
+    title: "Push Notification Engine with FCM & APNS Integration",
+    type: "Feature",
+    projectName: "E-Commerce Mobile App",
+    projectType: "Mobile App (iOS/Android)",
+    startDate: "2026-08-20",
+    endDate: "2026-09-02",
+    status: "Planned",
+    isFavourite: false,
+    createdOn: "2026-08-13T14:15:00"
+  },
+  {
+    id: "task-108",
+    code: "UX-518",
+    title: "Accessibility Audit & WCAG 2.1 AA Compliance Overhaul",
+    type: "Design",
+    projectName: "Customer Portal v2",
+    projectType: "Enterprise Web Portal",
+    startDate: "2026-08-21",
+    endDate: "2026-09-05",
+    status: "Planned",
+    isFavourite: false,
+    createdOn: "2026-08-14T10:00:00"
+  },
+  {
+    id: "task-109",
+    code: "SEC-310",
+    title: "Penetration Testing & Zero-Trust API Enclosure",
+    type: "Security",
+    projectName: "Cloud Infra & DevOps",
+    projectType: "Infrastructure Pipeline",
+    startDate: "2026-08-19",
+    endDate: "2026-08-31",
+    status: "In-Progress",
+    isFavourite: true,
+    createdOn: "2026-08-12T15:30:00",
+    startedOn: "2026-08-19T08:30:00"
+  },
+  {
+    id: "task-110",
+    code: "INF-305",
+    title: "CI/CD Pipeline Acceleration & Automated E2E Suite",
+    type: "Infrastructure",
+    projectName: "Cloud Infra & DevOps",
+    projectType: "Infrastructure Pipeline",
+    startDate: "2026-08-22",
+    endDate: "2026-09-08",
+    status: "Planned",
+    isFavourite: false,
+    createdOn: "2026-08-15T09:45:00"
+  },
+  {
+    id: "task-111",
+    code: "BUG-904",
+    title: "Resolve High-Latency SQL Query on Global Search Index",
+    type: "Bug Fix",
+    projectName: "Customer Portal v2",
+    projectType: "Enterprise Web Portal",
+    startDate: "2026-08-17",
+    endDate: "2026-08-24",
+    status: "In-Progress",
+    isFavourite: false,
+    createdOn: "2026-08-10T16:10:00",
+    startedOn: "2026-08-17T11:20:00"
+  },
+  {
+    id: "task-112",
+    code: "REF-415",
+    title: "Microservices API Gateway & Distributed Rate Limiter",
+    type: "Refactor",
+    projectName: "Cloud Infra & DevOps",
+    projectType: "Infrastructure Pipeline",
+    startDate: "2026-08-23",
+    endDate: "2026-09-10",
+    status: "Planned",
+    isFavourite: false,
+    createdOn: "2026-08-16T12:00:00"
   }
 ];
 
@@ -89,9 +197,16 @@ class TaskApp {
     const saved = localStorage.getItem("taskpulse_orange_tasks");
     if (saved) {
       try {
-        this.tasks = JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length >= 12) {
+          this.tasks = parsed;
+        } else {
+          this.tasks = [...INITIAL_TASKS];
+          this.saveState();
+        }
       } catch (e) {
         this.tasks = [...INITIAL_TASKS];
+        this.saveState();
       }
     } else {
       this.tasks = [...INITIAL_TASKS];
@@ -106,6 +221,7 @@ class TaskApp {
   cacheDOM() {
     this.statsBanner = document.querySelector(".stats-banner");
     this.toolbarSection = document.querySelector(".toolbar-section");
+    this.detailsTopbar = document.getElementById("detailsTopbar");
     this.contentArea = document.querySelector(".content-area");
     this.detailsContainer = document.getElementById("detailsContainer");
 
@@ -236,7 +352,7 @@ class TaskApp {
       panel.querySelectorAll(".sci-custom-select-option").forEach(opt => {
         const isSel = opt === optionBtn;
         opt.classList.toggle("is-selected", isSel);
-        
+
         let checkIcon = opt.querySelector(".sci-custom-select-option__check");
         if (isSel) {
           if (!checkIcon) {
@@ -345,7 +461,7 @@ class TaskApp {
       if (typeLabel) typeLabel.textContent = "All Task Types";
 
       this.populateProjectFilter();
-      
+
       this.statusTabs.querySelectorAll(".sci-chip-tab").forEach(b => {
         b.classList.toggle("active", b.dataset.status === "all");
       });
@@ -358,10 +474,10 @@ class TaskApp {
       this.currentViewMode = "grid";
       this.viewGridBtn.classList.add("active");
       this.viewTableBtn.classList.remove("active");
-      this.detailsContainer.classList.add("hidden");
-      this.statsBanner.classList.remove("hidden");
-      this.toolbarSection.classList.remove("hidden");
-      this.contentArea.classList.remove("hidden");
+      if (this.detailsContainer) this.detailsContainer.classList.add("hidden");
+      if (this.statsBanner) this.statsBanner.classList.remove("hidden");
+      if (this.toolbarSection) this.toolbarSection.classList.remove("hidden");
+      if (this.contentArea) this.contentArea.classList.remove("hidden");
       this.render();
     });
 
@@ -369,10 +485,10 @@ class TaskApp {
       this.currentViewMode = "table";
       this.viewTableBtn.classList.add("active");
       this.viewGridBtn.classList.remove("active");
-      this.detailsContainer.classList.add("hidden");
-      this.statsBanner.classList.remove("hidden");
-      this.toolbarSection.classList.remove("hidden");
-      this.contentArea.classList.remove("hidden");
+      if (this.detailsContainer) this.detailsContainer.classList.add("hidden");
+      if (this.statsBanner) this.statsBanner.classList.remove("hidden");
+      if (this.toolbarSection) this.toolbarSection.classList.remove("hidden");
+      if (this.contentArea) this.contentArea.classList.remove("hidden");
       this.render();
     });
 
@@ -399,8 +515,8 @@ class TaskApp {
     // Close Dropdowns & Custom Selects on outside click
     document.addEventListener("click", (e) => {
       if (
-        !e.target.closest(".card-header-right") && 
-        !e.target.closest(".table-action-cell") && 
+        !e.target.closest(".card-header-right") &&
+        !e.target.closest(".table-action-cell") &&
         !e.target.closest(".action-dropdown-menu")
       ) {
         this.closeAllDropdowns();
@@ -531,20 +647,22 @@ class TaskApp {
     this.activeDetailTaskId = taskId;
     this.currentViewMode = "details";
 
-    this.statsBanner.classList.add("hidden");
-    this.toolbarSection.classList.add("hidden");
-    this.contentArea.classList.add("hidden");
-    this.detailsContainer.classList.remove("hidden");
+    if (this.statsBanner) this.statsBanner.classList.add("hidden");
+    if (this.toolbarSection) this.toolbarSection.classList.add("hidden");
+    if (this.detailsTopbar) this.detailsTopbar.classList.remove("hidden");
+    if (this.contentArea) this.contentArea.classList.add("hidden");
+    if (this.detailsContainer) this.detailsContainer.classList.remove("hidden");
 
     this.renderDetailsView();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   closeDetailsView() {
-    this.detailsContainer.classList.add("hidden");
-    this.statsBanner.classList.remove("hidden");
-    this.toolbarSection.classList.remove("hidden");
-    this.contentArea.classList.remove("hidden");
+    if (this.detailsContainer) this.detailsContainer.classList.add("hidden");
+    if (this.detailsTopbar) this.detailsTopbar.classList.add("hidden");
+    if (this.statsBanner) this.statsBanner.classList.remove("hidden");
+    if (this.toolbarSection) this.toolbarSection.classList.remove("hidden");
+    if (this.contentArea) this.contentArea.classList.remove("hidden");
 
     this.currentViewMode = this.viewTableBtn.classList.contains("active") ? "table" : "grid";
     this.render();
@@ -569,8 +687,8 @@ class TaskApp {
     let progressPct = isInProgress ? Math.min(100, Math.max(10, Math.round((daysElapsed / durationDays) * 100))) : 0;
     if (task.status === "Completed") progressPct = 100;
 
-    this.detailsContainer.innerHTML = `
-      <div class="details-topbar">
+    if (this.detailsTopbar) {
+      this.detailsTopbar.innerHTML = `
         <button class="details-back-btn" onclick="app.closeDetailsView()" title="Back to Task List">
           <i data-lucide="arrow-left"></i>
         </button>
@@ -581,8 +699,10 @@ class TaskApp {
           <span>/</span>
           <strong style="color: var(--sci-color-navy);">${task.code}</strong>
         </div>
-      </div>
+      `;
+    }
 
+    this.detailsContainer.innerHTML = `
       <section class="details-hero ${isInProgress ? '' : 'is-planned'}">
         <div class="details-hero-row">
           <div>
@@ -1038,9 +1158,9 @@ class TaskApp {
 
       this.formProjectName.value = "E-Commerce Mobile App";
       this.formProjectType.value = "Mobile App";
-      
+
       const today = new Date().toISOString().split('T')[0];
-      const nextWeek = new Date(Date.now() + 7*24*60*60*1000).toISOString().split('T')[0];
+      const nextWeek = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
       this.formStartDate.value = today;
       this.formEndDate.value = nextWeek;
     }
@@ -1092,7 +1212,7 @@ class TaskApp {
   showToast(message, type = "info", undoTask = null) {
     const toast = document.createElement("div");
     toast.className = `toast toast-${type}`;
-    
+
     toast.innerHTML = `
       <i data-lucide="${type === 'success' ? 'check-circle-2' : 'info'}"></i>
       <span>${message}</span>

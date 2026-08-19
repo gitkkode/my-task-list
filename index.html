@@ -17,196 +17,202 @@
   <!-- Main App Container -->
   <div class="app-container">
     
-    <!-- SCIMAX Header -->
-    <header class="app-header">
-      <div class="app-header__glow" aria-hidden="true"></div>
-      <div class="app-header__content">
-        <div class="app-header__left">
-          <h1>Task Workspace</h1>
-          <p class="app-header__subtitle">SCIMAX Pubs System</p>
-        </div>
-        <div class="app-header__right">
-          <div class="app-header__actions">
-            <div class="date-display">
-              <i data-lucide="calendar"></i>
-              <span id="currentDateStr">Saturday, Aug 15, 2026</span>
-            </div>
-            <button class="sci-btn sci-btn--primary" id="openCreateModalBtn">
-              <i data-lucide="plus-circle"></i>
-              <span>New Task</span>
-            </button>
+    <!-- Sticky Header Wrapper Container -->
+    <div class="sticky-header-container" id="stickyHeaderContainer">
+      <!-- SCIMAX Header -->
+      <header class="app-header">
+        <div class="app-header__glow" aria-hidden="true"></div>
+        <div class="app-header__content">
+          <div class="app-header__left">
+            <h1>Task Workspace</h1>
+            <p class="app-header__subtitle">SCIMAX Pubs System</p>
           </div>
-        </div>
-      </div>
-    </header>
-
-    <!-- Stats Summary Banner -->
-    <!--
-    <section class="stats-banner">
-      <div class="stat-card">
-        <div class="stat-icon stat-orange">
-          <i data-lucide="list-todo"></i>
-        </div>
-        <div class="stat-content">
-          <span class="stat-label">Active Tasks</span>
-          <h2 class="stat-value" id="statActive">0</h2>
-        </div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-icon stat-amber">
-          <i data-lucide="play-circle"></i>
-        </div>
-        <div class="stat-content">
-          <span class="stat-label">In-Progress</span>
-          <h2 class="stat-value" id="statInProgress">0</h2>
-        </div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-icon stat-warm">
-          <i data-lucide="clock"></i>
-        </div>
-        <div class="stat-content">
-          <span class="stat-label">Planned</span>
-          <h2 class="stat-value" id="statPlanned">0</h2>
-        </div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-icon stat-star">
-          <i data-lucide="star"></i>
-        </div>
-        <div class="stat-content">
-          <span class="stat-label">Favourites</span>
-          <h2 class="stat-value" id="statFavourites">0</h2>
-        </div>
-      </div>
-    </section>
-    -->
-
-    <!-- Toolbar: Search, Filters & View Toggle -->
-    <section class="toolbar-section">
-      <div class="toolbar-top">
-        <!-- SCIMAX Search Box (.sci-search) -->
-        <div class="sci-search">
-          <i data-lucide="search" class="sci-search__icon"></i>
-          <input type="text" id="searchInput" class="sci-search__input" placeholder="Search tasks by title, code (e.g. MOB-104), project or type..." />
-          <span class="kbd-shortcut"><kbd>⌘</kbd><kbd>K</kbd></span>
-          <button class="clear-search-btn" id="clearSearchBtn" title="Clear search">
-            <i data-lucide="x"></i>
-          </button>
-        </div>
-
-        <!-- Right Controls: Custom Sort & View Switch -->
-        <div class="toolbar-actions">
-          <div class="sci-custom-select-wrap" id="sortSelectWrap" style="min-width: 210px;">
-            <button type="button" class="sci-custom-select-trigger" id="sortSelectTrigger">
-              <i data-lucide="arrow-up-down" class="sci-custom-select-trigger__left-icon"></i>
-              <span class="sci-custom-select-trigger__label" id="sortSelectLabel">Due Date: Soonest First</span>
-              <i data-lucide="chevron-down" class="sci-custom-select-trigger__caret"></i>
-            </button>
-            <div class="sci-custom-select-panel hidden" id="sortSelectPanel">
-              <button type="button" class="sci-custom-select-option is-selected" data-value="endDateAsc">
-                <span>Due Date: Soonest First</span>
-                <i data-lucide="check" class="sci-custom-select-option__check"></i>
-              </button>
-              <button type="button" class="sci-custom-select-option" data-value="startDateAsc">
-                <span>Start Date: Earliest First</span>
-              </button>
-              <button type="button" class="sci-custom-select-option" data-value="titleAsc">
-                <span>Task Title: A-Z</span>
-              </button>
-              <button type="button" class="sci-custom-select-option" data-value="idAsc">
-                <span>Task ID: Ascending</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="view-toggle">
-            <button class="toggle-btn active" id="viewGridBtn" title="Card Grid View">
-              <i data-lucide="layout-grid"></i>
-            </button>
-            <button class="toggle-btn" id="viewTableBtn" title="Compact Table View">
-              <i data-lucide="list"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Filter Controls Bar -->
-      <div class="filter-controls">
-        <!-- Status Filter Tabs (.sci-chip-tab) -->
-        <div class="status-tabs" id="statusTabs">
-          <button class="sci-chip-tab active" data-status="all">
-            <span>All Active</span>
-            <span class="tab-count" id="countAll">0</span>
-          </button>
-          <button class="sci-chip-tab" data-status="In-Progress">
-            <span class="status-dot dot-in-progress"></span>
-            <span>In-Progress</span>
-            <span class="tab-count" id="countInProgress">0</span>
-          </button>
-          <button class="sci-chip-tab" data-status="Planned">
-            <span class="status-dot dot-planned"></span>
-            <span>Planned</span>
-            <span class="tab-count" id="countPlanned">0</span>
-          </button>
-          <button class="sci-chip-tab" data-status="favourite">
-            <i data-lucide="star" class="tab-star-icon"></i>
-            <span>Favourites</span>
-            <span class="tab-count" id="countFavourites">0</span>
-          </button>
-        </div>
-
-        <div class="dropdown-filters">
-          <!-- Custom Project Selector Filter -->
-          <div class="sci-custom-select-wrap" id="projectFilterWrap" style="min-width: 180px;">
-            <button type="button" class="sci-custom-select-trigger" id="projectFilterTrigger">
-              <i data-lucide="folder" class="sci-custom-select-trigger__left-icon"></i>
-              <span class="sci-custom-select-trigger__label" id="projectFilterLabel">All Projects</span>
-              <i data-lucide="chevron-down" class="sci-custom-select-trigger__caret"></i>
-            </button>
-            <div class="sci-custom-select-panel hidden" id="projectFilterPanel">
-              <!-- Rendered dynamically by JS -->
-            </div>
-          </div>
-
-          <!-- Custom Task Type Selector Filter -->
-          <div class="sci-custom-select-wrap" id="typeFilterWrap" style="min-width: 170px;">
-            <button type="button" class="sci-custom-select-trigger" id="typeFilterTrigger">
-              <i data-lucide="layers" class="sci-custom-select-trigger__left-icon"></i>
-              <span class="sci-custom-select-trigger__label" id="typeFilterLabel">All Task Types</span>
-              <i data-lucide="chevron-down" class="sci-custom-select-trigger__caret"></i>
-            </button>
-            <div class="sci-custom-select-panel hidden" id="typeFilterPanel">
-              <button type="button" class="sci-custom-select-option is-selected" data-value="all">
-                <span>All Task Types</span>
-                <i data-lucide="check" class="sci-custom-select-option__check"></i>
-              </button>
-              <button type="button" class="sci-custom-select-option" data-value="Feature">
-                <span>Feature</span>
-              </button>
-              <button type="button" class="sci-custom-select-option" data-value="Bug Fix">
-                <span>Bug Fix</span>
-              </button>
-              <button type="button" class="sci-custom-select-option" data-value="Design">
-                <span>Design</span>
-              </button>
-              <button type="button" class="sci-custom-select-option" data-value="Refactor">
-                <span>Refactor</span>
-              </button>
-              <button type="button" class="sci-custom-select-option" data-value="Security">
-                <span>Security</span>
-              </button>
-              <button type="button" class="sci-custom-select-option" data-value="Infrastructure">
-                <span>Infrastructure</span>
+          <div class="app-header__right">
+            <div class="app-header__actions">
+              <div class="date-display">
+                <i data-lucide="calendar"></i>
+                <span id="currentDateStr">Saturday, Aug 15, 2026</span>
+              </div>
+              <button class="sci-btn sci-btn--primary" id="openCreateModalBtn">
+                <i data-lucide="plus-circle"></i>
+                <span>New Task</span>
               </button>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </header>
+
+      <!-- Stats Summary Banner -->
+      <!--
+      <section class="stats-banner">
+        <div class="stat-card">
+          <div class="stat-icon stat-orange">
+            <i data-lucide="list-todo"></i>
+          </div>
+          <div class="stat-content">
+            <span class="stat-label">Active Tasks</span>
+            <h2 class="stat-value" id="statActive">0</h2>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon stat-amber">
+            <i data-lucide="play-circle"></i>
+          </div>
+          <div class="stat-content">
+            <span class="stat-label">In-Progress</span>
+            <h2 class="stat-value" id="statInProgress">0</h2>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon stat-warm">
+            <i data-lucide="clock"></i>
+          </div>
+          <div class="stat-content">
+            <span class="stat-label">Planned</span>
+            <h2 class="stat-value" id="statPlanned">0</h2>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon stat-star">
+            <i data-lucide="star"></i>
+          </div>
+          <div class="stat-content">
+            <span class="stat-label">Favourites</span>
+            <h2 class="stat-value" id="statFavourites">0</h2>
+          </div>
+        </div>
+      </section>
+      -->
+
+      <!-- Toolbar: Search, Filters & View Toggle -->
+      <section class="toolbar-section">
+        <div class="toolbar-top">
+          <!-- SCIMAX Search Box (.sci-search) -->
+          <div class="sci-search">
+            <i data-lucide="search" class="sci-search__icon"></i>
+            <input type="text" id="searchInput" class="sci-search__input" placeholder="Search tasks by title, code (e.g. MOB-104), project or type..." />
+            <span class="kbd-shortcut"><kbd>⌘</kbd><kbd>K</kbd></span>
+            <button class="clear-search-btn" id="clearSearchBtn" title="Clear search">
+              <i data-lucide="x"></i>
+            </button>
+          </div>
+
+          <!-- Right Controls: Custom Sort & View Switch -->
+          <div class="toolbar-actions">
+            <div class="sci-custom-select-wrap" id="sortSelectWrap" style="min-width: 210px;">
+              <button type="button" class="sci-custom-select-trigger" id="sortSelectTrigger">
+                <i data-lucide="arrow-up-down" class="sci-custom-select-trigger__left-icon"></i>
+                <span class="sci-custom-select-trigger__label" id="sortSelectLabel">Due Date: Soonest First</span>
+                <i data-lucide="chevron-down" class="sci-custom-select-trigger__caret"></i>
+              </button>
+              <div class="sci-custom-select-panel hidden" id="sortSelectPanel">
+                <button type="button" class="sci-custom-select-option is-selected" data-value="endDateAsc">
+                  <span>Due Date: Soonest First</span>
+                  <i data-lucide="check" class="sci-custom-select-option__check"></i>
+                </button>
+                <button type="button" class="sci-custom-select-option" data-value="startDateAsc">
+                  <span>Start Date: Earliest First</span>
+                </button>
+                <button type="button" class="sci-custom-select-option" data-value="titleAsc">
+                  <span>Task Title: A-Z</span>
+                </button>
+                <button type="button" class="sci-custom-select-option" data-value="idAsc">
+                  <span>Task ID: Ascending</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="view-toggle">
+              <button class="toggle-btn active" id="viewGridBtn" title="Card Grid View">
+                <i data-lucide="layout-grid"></i>
+              </button>
+              <button class="toggle-btn" id="viewTableBtn" title="Compact Table View">
+                <i data-lucide="list"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Controls Bar -->
+        <div class="filter-controls">
+          <!-- Status Filter Tabs (.sci-chip-tab) -->
+          <div class="status-tabs" id="statusTabs">
+            <button class="sci-chip-tab active" data-status="all">
+              <span>All Active</span>
+              <span class="tab-count" id="countAll">0</span>
+            </button>
+            <button class="sci-chip-tab" data-status="In-Progress">
+              <span class="status-dot dot-in-progress"></span>
+              <span>In-Progress</span>
+              <span class="tab-count" id="countInProgress">0</span>
+            </button>
+            <button class="sci-chip-tab" data-status="Planned">
+              <span class="status-dot dot-planned"></span>
+              <span>Planned</span>
+              <span class="tab-count" id="countPlanned">0</span>
+            </button>
+            <button class="sci-chip-tab" data-status="favourite">
+              <i data-lucide="star" class="tab-star-icon"></i>
+              <span>Favourites</span>
+              <span class="tab-count" id="countFavourites">0</span>
+            </button>
+          </div>
+
+          <div class="dropdown-filters">
+            <!-- Custom Project Selector Filter -->
+            <div class="sci-custom-select-wrap" id="projectFilterWrap" style="min-width: 180px;">
+              <button type="button" class="sci-custom-select-trigger" id="projectFilterTrigger">
+                <i data-lucide="folder" class="sci-custom-select-trigger__left-icon"></i>
+                <span class="sci-custom-select-trigger__label" id="projectFilterLabel">All Projects</span>
+                <i data-lucide="chevron-down" class="sci-custom-select-trigger__caret"></i>
+              </button>
+              <div class="sci-custom-select-panel hidden" id="projectFilterPanel">
+                <!-- Rendered dynamically by JS -->
+              </div>
+            </div>
+
+            <!-- Custom Task Type Selector Filter -->
+            <div class="sci-custom-select-wrap" id="typeFilterWrap" style="min-width: 170px;">
+              <button type="button" class="sci-custom-select-trigger" id="typeFilterTrigger">
+                <i data-lucide="layers" class="sci-custom-select-trigger__left-icon"></i>
+                <span class="sci-custom-select-trigger__label" id="typeFilterLabel">All Task Types</span>
+                <i data-lucide="chevron-down" class="sci-custom-select-trigger__caret"></i>
+              </button>
+              <div class="sci-custom-select-panel hidden" id="typeFilterPanel">
+                <button type="button" class="sci-custom-select-option is-selected" data-value="all">
+                  <span>All Task Types</span>
+                  <i data-lucide="check" class="sci-custom-select-option__check"></i>
+                </button>
+                <button type="button" class="sci-custom-select-option" data-value="Feature">
+                  <span>Feature</span>
+                </button>
+                <button type="button" class="sci-custom-select-option" data-value="Bug Fix">
+                  <span>Bug Fix</span>
+                </button>
+                <button type="button" class="sci-custom-select-option" data-value="Design">
+                  <span>Design</span>
+                </button>
+                <button type="button" class="sci-custom-select-option" data-value="Refactor">
+                  <span>Refactor</span>
+                </button>
+                <button type="button" class="sci-custom-select-option" data-value="Security">
+                  <span>Security</span>
+                </button>
+                <button type="button" class="sci-custom-select-option" data-value="Infrastructure">
+                  <span>Infrastructure</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    <!-- Details View Topbar (Inside Sticky Header Container) -->
+    <div class="details-topbar hidden" id="detailsTopbar"></div>
+    </div>
 
     <!-- Main Content Container: Grid vs Table -->
     <main class="content-area">
